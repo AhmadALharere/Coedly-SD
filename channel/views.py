@@ -12,11 +12,15 @@ from django.db.models import Q
 
 # Create your views here.
 
-def Show_channel_Detail(request,id):
-    channel_info = channel.objects.get(id=id)
-    insights.objects.create(channel=channel_info,account=request.user,action_Type='Reach')
-    serializer = channelSerializer(channel_info)
-    return Response(serializer.data,status=status.HTTP_200_OK)
+class Show_channel_Detail(APIView):
+    def get(self,request,id):
+        channel_info = channel.objects.get(id=id)
+        insights.objects.create(channel=channel_info,account=request.user,action_Type='Reach')
+        serializer = channelSerializer(channel_info)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+
+    
+
 
 def Show_channel_insights(request,id):
     wanted_channel = channel.objects.get(id=id)
@@ -29,7 +33,7 @@ def Show_channel_insights(request,id):
     channelfilter = Q(channel=wanted_channel)
     reachtime = insights.objects.Value('account').distinct().filter(timefilter & reachfilter & channelfilter).length()
     netfollows = insights.objects.Value('account').distinct().filter(timefilter & followfilter & channelfilter).length()-insights.objects.Value('account').distinct().filter(timefilter & unfollowfilter & channelfilter).length()
-    resaults = insights.objects.aggregate( reachtime = reachtime , netfollows = netfollows )
+    resaults = {"netfollow":netfollows,"reachtime":reachtime}
     return JsonResponse(resaults)
 
 
