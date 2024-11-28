@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     
     #my apps
     'channel',
+    'rest_framework',
     
 ]
 
