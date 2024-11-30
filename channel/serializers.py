@@ -1,9 +1,10 @@
 from rest_framework import serializers
-from .models import channel
+from .models import channel,insights
 
 class channelSerializer(serializers.ModelSerializer):
     class Meta:
-        Model=channel
+        model=channel
         fields = "__all__"
         
+
  

@@ -1,6 +1,8 @@
 from django.db import models
-from django.utils.text import slugify
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 
 channel_type = (('public','public'),('private','private'))
 Action_Type = (('Follow','Follow'),('Unfollow','Unfollow'),('Reach','Reach'))
@@ -22,7 +24,8 @@ class channel(models.Model):
     def __str__(self):
         return self.name
 
- 
+
+
     
 class insights(models.Model):
     
